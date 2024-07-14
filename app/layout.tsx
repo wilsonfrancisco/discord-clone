@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 import "./styles/globals.css";
 import { cn } from "@/lib/utils";
@@ -26,7 +26,6 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-
       <html lang="en" suppressHydrationWarning>
         <body className={cn(
           font.className,
