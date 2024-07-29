@@ -33,7 +33,7 @@ model Server {
   id         String @id @default(uuid())
   name       String
   imageUrl   String @db.Text
-  inviteCode String @db.Text
+  inviteCode String @unique
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -48,9 +48,15 @@ model Server {
   @@map("servers")
 }
 
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
 model Member {
-  id   String @id @default(uuid())
-  role String @default("GUEST")
+  id   String     @id @default(uuid())
+  role MemberRole @default(GUEST)
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -66,10 +72,16 @@ model Member {
   @@map("members")
 }
 
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
+
 model Channel {
-  id   String @id @default(uuid())
+  id   String      @id @default(uuid())
   name String
-  type String @default("TEXT")
+  type ChannelType @default(TEXT)
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)

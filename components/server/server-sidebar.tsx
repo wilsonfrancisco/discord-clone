@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 
+import { ChannelType, MemberRole } from "@prisma/client";
+
 import prisma from "@/lib/prisma/client";
 import { currentProfile } from "@/lib/current-profile";
-import { ChannelType, MemberRole } from "@/lib/utils";
 
 import { ServerHeader } from "./server-header";
 

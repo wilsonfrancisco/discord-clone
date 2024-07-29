@@ -1,11 +1,25 @@
 "use client"
 
-import { MemberRole } from "@/lib/utils"
-import { ServerWithMemberWithProfiles } from "@/types"
+import { MemberRole } from "@prisma/client"
+import {
+  ChevronDown,
+  LogOut,
+  PlusCircle,
+  Settings,
+  Trash,
+  UserPlus,
+  Users
+} from "lucide-react"
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react"
 import { useModal } from "@/hooks/use-model-store"
+import { ServerWithMemberWithProfiles } from "@/types"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
 
 interface ServerHeaderProps {
   server: ServerWithMemberWithProfiles,
@@ -16,7 +30,7 @@ export const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
   const { onOpen } = useModal()
 
   const isAdmin = role === MemberRole.ADMIN
-  const isModerator = isAdmin || MemberRole.MODERATOR
+  const isModerator = isAdmin || role === MemberRole.MODERATOR
 
   return (
     <DropdownMenu>
