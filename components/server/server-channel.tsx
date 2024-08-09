@@ -40,6 +40,8 @@ export const ServerChannel: React.FC<ServerChannelProps> = ({
   const params = useParams()
   const router = useRouter()
 
+  console.log(params)
+
   const Icon = iconMap[channel.type]
 
   return (

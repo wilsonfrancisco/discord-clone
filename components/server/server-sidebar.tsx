@@ -199,6 +199,8 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               {members?.map(member => (
                 <ServerMember
                   key={member.id}
+                  member={member}
+                  server={server}
                 />
               ))}
             </div>
