@@ -67,6 +67,12 @@ model Member {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  messages       Message[]
+  directMessages DirectMessage[]
+
+  conversationsInitiated Conversation[] @relation("sender")
+  conversationsReceived  Conversation[] @relation("receiver")
+
   @@index([profileId])
   @@index([serverId])
   @@map("members")
@@ -92,7 +98,72 @@ model Channel {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  messages Message[]
+
   @@index([profileId])
   @@index([serverId])
   @@map("channels")
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String @db.Text
+
+  fileUrl String? @db.Text
+
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  channelId String
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+  @@index([channelId])
+  @@map("messages")
+}
+
+model Conversation {
+  id String @id @default(uuid())
+
+  receiverId String
+  receiver   Member @relation("receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   Member @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  directMessages DirectMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
+  @@map("conversations")
+}
+
+model DirectMessage {
+  id      String  @id @default(uuid())
+  content String
+  fileUrl String? @db.Text
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deleted Boolean @default(false)
+
+  @@index([memberId])
+  @@index([conversationId])
+  @@map("direct_messages")
 }
